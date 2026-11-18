@@ -50,3 +50,13 @@ def test_lit_sous_la_surface(cartes):
 def test_cratere_a_sec(cartes):
     reg, alt, niv = cartes
     assert np.isnan(niv[np.isin(reg, [Region.CRATERE, Region.RUINES])]).all()
+
+
+def test_eau_jamais_au_dessus_des_berges(cartes):
+    # un pixel sec voisin d'un pixel d'eau n'est jamais plus bas que la surface de cette eau
+    reg, alt, niv = cartes
+    eau = ~np.isnan(niv)
+    for dz, dx in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        n = np.roll(niv, (dz, dx), (0, 1))
+        e = np.roll(eau, (dz, dx), (0, 1))
+        assert not (~eau & e & (alt < n)).any()

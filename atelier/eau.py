@@ -154,4 +154,13 @@ def appliquer_eau(alt: np.ndarray, regions: np.ndarray, graine: int = GRAINE) ->
 
     niveau[mer] = 0.0
     niveau[interdit] = np.nan
+
+    # berges : une terre qui touche l'eau n'est jamais plus basse que sa surface (pas de mur d'eau)
+    eau = ~np.isnan(niveau)
+    plein = np.where(eau, niveau, -np.inf)
+    voisin_max = np.full(alt.shape, -np.inf, np.float32)
+    for dz, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+        voisin_max = np.maximum(voisin_max, np.roll(plein, (dz, dx), (0, 1)))
+    berge = ~eau & (alt < voisin_max + 0.5)
+    alt[berge] = voisin_max[berge] + 0.5
     return alt.astype(np.float32), niveau
