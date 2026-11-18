@@ -39,7 +39,7 @@
 
 ---
 
-### Tâche 1 : description du monde et mise en place du projet
+### Task 1: description du monde et mise en place du projet
 
 **Fichiers :**
 - Créer : `atelier/__init__.py` (vide), `atelier/monde.py`, `tests/test_monde.py`, `pytest.ini` (`testpaths = tests`), `.gitignore` (`donnees/`, `__pycache__/`)
@@ -98,7 +98,7 @@ def test_eau_decrite():
 
 ---
 
-### Tâche 2 : bruit et carte des régions
+### Task 2: bruit et carte des régions
 
 **Fichiers :** créer `atelier/bruit.py`, `atelier/regions.py`, `tests/conftest.py`, `tests/test_regions.py`
 
@@ -164,7 +164,7 @@ Le test `Port-Écume` est volontairement absent ici : sa région (côte) est vé
 
 ---
 
-### Tâche 3 : carte d'altitude
+### Task 3: carte d'altitude
 
 **Fichiers :** créer `atelier/altitude.py`, `tests/test_altitude.py`
 
@@ -237,7 +237,7 @@ def test_pas_de_falaise_hors_montagnes(cartes):
 
 ---
 
-### Tâche 4 : rivières et lacs
+### Task 4: rivières et lacs
 
 **Fichiers :** créer `atelier/eau.py`, `tests/test_eau.py`
 
@@ -307,7 +307,7 @@ def test_cratere_a_sec(cartes):
 
 ---
 
-### Tâche 5 : routes et aplanissement des lieux
+### Task 5: routes et aplanissement des lieux
 
 **Fichiers :** créer `atelier/routes.py`, `atelier/lieux.py`, `tests/test_routes_lieux.py`
 
@@ -394,7 +394,7 @@ Le test `test_lieux_json` suppose Aurelia en (0.50, 0.50), c'est-à-dire le bloc
 
 ---
 
-### Tâche 6 : assemblage, export, lecture et aperçu
+### Task 6: assemblage, export, lecture et aperçu
 
 **Fichiers :** créer `atelier/export.py`, `atelier/__main__.py`, `tests/test_export.py`. Compléter `tests/conftest.py` avec la fixture `monde` (session).
 
