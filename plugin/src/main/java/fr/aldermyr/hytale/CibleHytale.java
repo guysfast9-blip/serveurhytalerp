@@ -40,6 +40,12 @@ final class CibleHytale implements Cible {
     }
 
     @Override
+    public void plante(int lx, int y, int lz, String nom) {
+        int id = ids.plante(nom);
+        if (id != 0 && y < 320) blocs.setBlock(lx, y, lz, id, 0, 0);
+    }
+
+    @Override
     public void prefab(String dossier, long tirage, int lx, int y, int lz) {
         List<BlockSelection> variantes = prefabs.dossier(dossier);
         if (variantes.isEmpty()) return;
@@ -50,7 +56,9 @@ final class CibleHytale implements Cible {
         s.forEachBlock((bx, by, bz, b) -> {
             int x = ox + bx, yy = oy + by, z = oz + bz;
             if (x < 0 || x >= 32 || z < 0 || z >= 32 || yy < 0 || yy >= 320) return;
-            if (b.blockId() == 0 || blocs.getBlock(x, yy, z) != 0) return;
+            if (b.blockId() == 0) return;
+            int existant = blocs.getBlock(x, yy, z);
+            if (existant != 0 && !ids.plantes.contains(existant)) return;
             blocs.setBlock(x, yy, z, b.blockId(), b.rotation(), b.filler());
         });
     }

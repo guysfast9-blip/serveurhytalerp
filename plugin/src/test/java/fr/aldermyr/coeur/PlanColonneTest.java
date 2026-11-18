@@ -111,4 +111,40 @@ public class PlanColonneTest {
         assertTrue(compte.get("Soil_Grass") > 2000);
         assertTrue(teintes.size() > 20);
     }
+
+    static java.util.Map<String, Integer> plantes(int region, boolean route) {
+        CartesMonde c = CartesMonde.vide();
+        java.util.Map<String, Integer> compte = new java.util.HashMap<>();
+        for (int i = 0; i < 3000; i++) {
+            int x = (i % 60) * 2, z = (i / 60) * 2;
+            c.poser(x, z, 20, region, null, route);
+            String p = PlanColonne.planifier(c, P, x, z, 20, 0).plante();
+            compte.merge(p == null ? "aucune" : p, 1, Integer::sum);
+        }
+        return compte;
+    }
+
+    @Test
+    public void herbeEtFleursAuSol() {
+        java.util.Map<String, Integer> plaine = plantes(1, false);
+        int sans = plaine.getOrDefault("aucune", 0);
+        assertTrue("plaine : " + plaine, sans > 600 && sans < 2600);
+        assertTrue(plaine.keySet().stream().anyMatch(n -> n.startsWith("Plant_Grass_Lush")));
+        assertTrue(plaine.keySet().stream().anyMatch(n -> n.startsWith("Plant_Flower")));
+        assertTrue(plantes(4, false).keySet().stream().anyMatch(n -> n.startsWith("Plant_Fern")));
+        assertEquals(java.util.Map.of("aucune", 3000), plantes(1, true));
+        assertEquals(java.util.Map.of("aucune", 3000), plantes(8, false));
+    }
+
+    @Test
+    public void pasDePlanteSurLEauLaRocheNiLeSable() {
+        assertNull(plan(5, 1, 8, false).plante());
+        CartesMonde c = CartesMonde.vide();
+        for (int x = 0; x < 200; x++) {
+            c.poser(x, 0, 120, 2, null, false);
+            assertNull(PlanColonne.planifier(c, P, x, 0, 120, 0).plante());   // roche au-dessus de 115
+            c.poser(x, 0, 30, 2, null, false);
+            assertNull(PlanColonne.planifier(c, P, x, 0, 30, 4).plante());    // falaise
+        }
+    }
 }

@@ -22,13 +22,19 @@ public final class Palette {
 
     public record Vegetation(double densite, java.util.List<Prefab> prefabs) {}
 
+    public record Plante(String bloc, double poids) {}
+
+    /** Herbes, fougères et fleurs posées d'un bloc au-dessus du sol. */
+    public record Sol(double densite, java.util.List<Plante> blocs) {}
+
     /** Réglages du relief, des surfaces et de la végétation d'une région. */
     public record Region(double relief, double crete, String falaise, int rocheAuDessus,
-                         java.util.List<Variante> variantes, Vegetation vegetation) {}
+                         java.util.List<Variante> variantes, Vegetation vegetation, Sol sol) {}
 
     private final JsonObject json;
     private final int versionFichier;
     private final Region[] regions = new Region[256];
+    private volatile java.util.Set<String> fertiles;
 
     private Palette(JsonObject json, int versionFichier) {
         this.json = json;
@@ -89,6 +95,26 @@ public final class Palette {
     /** Décalage vertical des prefabs (si les arbres flottent ou s'enfoncent d'un bloc). */
     public int decalagePrefabs() { return json.has("decalagePrefabs") ? json.get("decalagePrefabs").getAsInt() : 0; }
 
+    /** Surfaces sur lesquelles poussent les plantes du sol. */
+    public java.util.Set<String> solsFertiles() {
+        java.util.Set<String> s = fertiles;
+        if (s == null) {
+            java.util.Set<String> noms = new java.util.HashSet<>();
+            if (json.has("solsFertiles")) json.getAsJsonArray("solsFertiles").forEach(e -> noms.add(e.getAsString()));
+            fertiles = s = java.util.Set.copyOf(noms);
+        }
+        return s;
+    }
+
+    /** Tous les noms de plantes du sol, toutes régions confondues. */
+    public java.util.Set<String> toutesLesPlantes() {
+        java.util.Set<String> noms = new java.util.HashSet<>();
+        for (String cle : json.getAsJsonObject("regions").keySet()) {
+            for (Plante p : region(Integer.parseInt(cle)).sol().blocs()) noms.add(p.bloc());
+        }
+        return noms;
+    }
+
     public Region region(int region) {
         Region r = regions[region & 0xFF];
         if (r == null) {
@@ -121,13 +147,26 @@ public final class Palette {
                 }
             }
         }
+        double densiteSol = 0;
+        java.util.List<Plante> plantes = new java.util.ArrayList<>();
+        if (o.has("sol")) {
+            JsonObject sol = o.getAsJsonObject("sol");
+            densiteSol = sol.has("densite") ? sol.get("densite").getAsDouble() : 0;
+            if (sol.has("blocs")) {
+                for (JsonElement e : sol.getAsJsonArray("blocs")) {
+                    JsonObject pl = e.getAsJsonObject();
+                    plantes.add(new Plante(pl.get("bloc").getAsString(), pl.get("poids").getAsDouble()));
+                }
+            }
+        }
         String surface = o.get("surface").getAsString();
         return new Region(
             o.has("relief") ? o.get("relief").getAsDouble() : 0,
             o.has("crete") ? o.get("crete").getAsDouble() : 0,
             o.has("falaise") ? o.get("falaise").getAsString() : surface,
             o.has("rocheAuDessus") ? o.get("rocheAuDessus").getAsInt() : Integer.MAX_VALUE,
-            java.util.List.copyOf(variantes), new Vegetation(densite, java.util.List.copyOf(prefabs)));
+            java.util.List.copyOf(variantes), new Vegetation(densite, java.util.List.copyOf(prefabs)),
+            new Sol(plantes.isEmpty() ? 0 : densiteSol, java.util.List.copyOf(plantes)));
     }
 
     private String texte(String cle) {

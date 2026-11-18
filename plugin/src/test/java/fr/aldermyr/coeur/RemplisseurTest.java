@@ -16,6 +16,7 @@ public class RemplisseurTest {
         final Set<String> eaux = new HashSet<>();
         final List<Integer> teintes = new ArrayList<>();
         final List<String> prefabs = new ArrayList<>();
+        final List<String> plantes = new ArrayList<>();
 
         @Override public void bloc(int lx, int y, int lz, String nom) {
             assertTrue(lx >= 0 && lx < 32 && lz >= 0 && lz < 32 && y >= 0 && y < 320);
@@ -23,6 +24,10 @@ public class RemplisseurTest {
         }
         @Override public void eau(int lx, int y, int lz) { eaux.add(lx + "," + y + "," + lz); }
         @Override public void teinte(int lx, int lz, int argb) { teintes.add(argb); }
+        @Override public void plante(int lx, int y, int lz, String nom) {
+            assertTrue(lx >= 0 && lx < 32 && lz >= 0 && lz < 32);
+            plantes.add(lx + "," + y + "," + lz + "," + nom);
+        }
         @Override public void prefab(String dossier, long tirage, int lx, int y, int lz) {
             prefabs.add(lx + "," + y + "," + lz + "," + dossier);
         }
@@ -87,6 +92,12 @@ public class RemplisseurTest {
         c.poserZone(-64, -64, 192, 192, 10, 4);
         Enregistreur r = remplir(c, Extrait.tout(), 0, 0);
         assertFalse(r.prefabs.isEmpty());
+        assertFalse(r.plantes.isEmpty());
+        for (String p : r.plantes) {
+            String[] t = p.split(",");
+            assertTrue(r.blocs.stream().anyMatch(b -> b.startsWith(t[0] + "," + (Integer.parseInt(t[1]) - 1) + "," + t[2] + ",Soil_")));
+            assertFalse(r.blocs.stream().anyMatch(b -> b.startsWith(t[0] + "," + t[1] + "," + t[2] + ",")));
+        }
         boolean dedans = false, dehors = false;
         for (String p : r.prefabs) {
             int lx = Integer.parseInt(p.split(",")[0]);

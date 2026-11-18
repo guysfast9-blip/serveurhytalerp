@@ -41,6 +41,23 @@ final class Identifiants {
         this.niveauEauMax = (byte) Fluid.getAssetMap().getAsset(idEau).getMaxFluidLevel();
     }
 
+    private final Map<String, Integer> cachePlantes = new ConcurrentHashMap<>();
+    /** Identifiants des plantes du sol : un prefab (arbre) a le droit de les remplacer. */
+    final java.util.Set<Integer> plantes = ConcurrentHashMap.newKeySet();
+
+    /** Identifiant d'une plante, ou 0 (rien) si le nom est inconnu : pas de pierre à la place d'une fleur. */
+    int plante(String nom) {
+        return cachePlantes.computeIfAbsent(nom, n -> {
+            int id = BlockType.getAssetMap().getIndex(n);
+            if (id == INCONNU) {
+                avertir.accept("Plante inconnue « " + n + " » : ignorée. Corrigez-la dans palette.json (clé \"sol\").");
+                return 0;
+            }
+            plantes.add(id);
+            return id;
+        });
+    }
+
     int bloc(String nom) {
         return cache.computeIfAbsent(nom, this::resoudre);
     }

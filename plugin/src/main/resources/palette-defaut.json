@@ -3,10 +3,12 @@
   "regions": {
     "0": {"surface": "Soil_Sand", "sousCouche": "Soil_Clay", "profondeur": "Rock_Stone", "teinte": "#6A9A5A",
           "relief": 0, "falaise": "Soil_Sand", "variantes": [],
+          "sol": {"densite": 0, "blocs": []},
           "vegetation": {"densite": 0, "prefabs": []}},
     "1": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#7DB24A",
           "relief": 3, "falaise": "Soil_Dirt",
           "variantes": [{"bloc": "Soil_Dirt", "part": 0.02}],
+          "sol": {"densite": 0.35, "blocs": [{"bloc": "Plant_Grass_Lush_Short", "poids": 5}, {"bloc": "Plant_Grass_Lush", "poids": 3}, {"bloc": "Plant_Grass_Lush_Tall", "poids": 1}, {"bloc": "Plant_Flower_Common_Yellow", "poids": 0.3}, {"bloc": "Plant_Flower_Common_White", "poids": 0.3}, {"bloc": "Plant_Flower_Common_Blue", "poids": 0.2}, {"bloc": "Plant_Flower_Common_Red", "poids": 0.2}, {"bloc": "Plant_Flower_Flax_Blue", "poids": 0.1}]},
           "vegetation": {"densite": 0.05, "prefabs": [
             {"dossier": "Trees/Oak/Stage_2", "poids": 3},
             {"dossier": "Trees/Oak/Stage_3", "poids": 3},
@@ -19,6 +21,7 @@
     "2": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Granite", "teinte": "#6E8A5A",
           "relief": 6, "crete": 24, "falaise": "Rock_Stone", "rocheAuDessus": 115,
           "variantes": [{"bloc": "Rock_Stone", "part": 0.15}, {"bloc": "Soil_Gravel", "part": 0.08}],
+          "sol": {"densite": 0.2, "blocs": [{"bloc": "Plant_Grass_Rocky_Short", "poids": 4}, {"bloc": "Plant_Grass_Rocky", "poids": 2}, {"bloc": "Plant_Grass_Rocky_Tall", "poids": 0.5}, {"bloc": "Plant_Flower_Common_Violet", "poids": 0.2}, {"bloc": "Plant_Flower_Common_White", "poids": 0.2}]},
           "vegetation": {"densite": 0.14, "prefabs": [
             {"dossier": "Trees/Fir/Stage_2", "poids": 3},
             {"dossier": "Trees/Fir/Stage_3", "poids": 3},
@@ -29,6 +32,7 @@
     "3": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#B3A458",
           "relief": 4, "falaise": "Rock_Shale",
           "variantes": [{"bloc": "Soil_Dirt", "part": 0.08}, {"bloc": "Soil_Gravel", "part": 0.04}, {"bloc": "Rock_Volcanic", "part": 0.02}],
+          "sol": {"densite": 0.2, "blocs": [{"bloc": "Plant_Grass_Dry", "poids": 3}, {"bloc": "Plant_Grass_Dry_Tall", "poids": 1}, {"bloc": "Plant_Grass_Arid_Short", "poids": 3}, {"bloc": "Plant_Grass_Arid", "poids": 1}, {"bloc": "Plant_Grass_Arid_Tall", "poids": 0.5}, {"bloc": "Plant_Fern_Arid", "poids": 0.1}, {"bloc": "Plant_Flower_Flax_Orange", "poids": 0.1}]},
           "vegetation": {"densite": 0.025, "prefabs": [
             {"dossier": "Trees/Dry/Stage_2", "poids": 2},
             {"dossier": "Trees/Dry/Stage_1_Dead", "poids": 1},
@@ -42,6 +46,7 @@
     "4": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#4E8F3A",
           "relief": 3, "falaise": "Soil_Dirt",
           "variantes": [{"bloc": "Soil_Dirt", "part": 0.08}],
+          "sol": {"densite": 0.45, "blocs": [{"bloc": "Plant_Grass_Lush_Short", "poids": 3}, {"bloc": "Plant_Grass_Lush", "poids": 2}, {"bloc": "Plant_Fern_Forest", "poids": 2}, {"bloc": "Plant_Fern", "poids": 1}, {"bloc": "Plant_Fern_Tall", "poids": 0.5}, {"bloc": "Plant_Flower_Bushy_Violet", "poids": 0.2}, {"bloc": "Plant_Flower_Bushy_White", "poids": 0.2}, {"bloc": "Plant_Flower_Common_Pink", "poids": 0.1}]},
           "vegetation": {"densite": 0.45, "prefabs": [
             {"dossier": "Trees/Oak/Stage_4", "poids": 3},
             {"dossier": "Trees/Oak/Stage_5", "poids": 2},
@@ -57,6 +62,7 @@
     "5": {"surface": "Soil_Mud", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#8C8A4E",
           "relief": 1.5, "falaise": "Soil_Dirt",
           "variantes": [{"bloc": "Soil_Grass", "part": 0.4}],
+          "sol": {"densite": 0.4, "blocs": [{"bloc": "Plant_Grass_Wet_Short", "poids": 3}, {"bloc": "Plant_Grass_Wet", "poids": 3}, {"bloc": "Plant_Grass_Wet_Tall", "poids": 1}, {"bloc": "Plant_Grass_Wet_Overgrown", "poids": 1}, {"bloc": "Plant_Fern_Wet", "poids": 0.5}]},
           "vegetation": {"densite": 0.08, "prefabs": [
             {"dossier": "Trees/Ash_swamp/Stage_2", "poids": 2},
             {"dossier": "Trees/Ash_swamp/Stage_3", "poids": 2},
@@ -66,6 +72,7 @@
     "6": {"surface": "Soil_Sand", "sousCouche": "Soil_Clay", "profondeur": "Rock_Stone", "teinte": "#A8B060",
           "relief": 1.5, "falaise": "Rock_Stone",
           "variantes": [{"bloc": "Soil_Grass", "part": 0.2}, {"bloc": "Soil_Gravel", "part": 0.08}],
+          "sol": {"densite": 0.12, "blocs": [{"bloc": "Plant_Grass_Sharp_Short", "poids": 3}, {"bloc": "Plant_Grass_Sharp", "poids": 2}, {"bloc": "Plant_Grass_Sharp_Tall", "poids": 1}]},
           "vegetation": {"densite": 0.02, "prefabs": [
             {"dossier": "Trees/Aspen/Stage_2", "poids": 2},
             {"dossier": "Trees/Palm/Stage_2", "poids": 1},
@@ -74,6 +81,7 @@
     "7": {"surface": "Rock_Shale", "sousCouche": "Rock_Stone", "profondeur": "Rock_Stone", "teinte": "#77706A",
           "relief": 3, "falaise": "Rock_Shale",
           "variantes": [{"bloc": "Soil_Gravel", "part": 0.2}, {"bloc": "Soil_Dirt", "part": 0.2}],
+          "sol": {"densite": 0.15, "blocs": [{"bloc": "Plant_Grass_Poisoned_Short", "poids": 3}, {"bloc": "Plant_Grass_Poisoned", "poids": 2}, {"bloc": "Plant_Grass_Gnarled_Short", "poids": 2}, {"bloc": "Plant_Flower_Common_Poisoned", "poids": 0.3}]},
           "vegetation": {"densite": 0.03, "prefabs": [
             {"dossier": "Trees/Poisoned/Stage_4", "poids": 1},
             {"dossier": "Plants/Twisted_Wood/Poisoned", "poids": 2},
@@ -82,12 +90,14 @@
     "8": {"surface": "Rock_Basalt", "sousCouche": "Rock_Shale", "profondeur": "Rock_Stone", "teinte": "#5A4A66",
           "relief": 2, "falaise": "Rock_Basalt",
           "variantes": [{"bloc": "Rock_Volcanic", "part": 0.3}, {"bloc": "Soil_Gravel", "part": 0.1}],
+          "sol": {"densite": 0, "blocs": []},
           "vegetation": {"densite": 0.01, "prefabs": [
             {"dossier": "Rock_Formations/Rocks/Basalt", "poids": 1}]}}
   },
   "penteFalaise": 3,
   "limiteArbres": 130,
   "decalagePrefabs": 0,
+  "solsFertiles": ["Soil_Grass", "Soil_Mud", "Soil_Dirt"],
   "neige": "Soil_Snow",
   "altitudeNeige": 150,
   "litEau": "Soil_Gravel",

@@ -44,6 +44,10 @@ public class PaletteTest {
         assertEquals(2, p.version());
         assertEquals(3, p.penteFalaise());
         assertEquals(0, p.decalagePrefabs());
+        assertTrue(p.region(1).sol().densite() > 0);
+        assertTrue(p.region(1).sol().blocs().get(0).bloc().startsWith("Plant_"));
+        assertEquals(0, p.region(8).sol().densite(), 0);
+        assertTrue(p.solsFertiles().contains("Soil_Grass"));
         assertEquals(-1, Palette.lire(new StringReader("{\"decalagePrefabs\": -1}")).decalagePrefabs());
         Palette.Region montagnes = p.region(2);
         assertTrue(montagnes.crete() > montagnes.relief());

@@ -8,6 +8,11 @@ public interface Cible {
 
     void teinte(int lx, int lz, int argb);
 
+    /** Pose une plante (herbe, fougère, fleur) ; un nom inconnu ne doit rien poser. */
+    default void plante(int lx, int y, int lz, String nom) {
+        bloc(lx, y, lz, nom);
+    }
+
     /**
      * Pose la partie d'un prefab qui tombe dans ce chunk. (lx, lz) est la position de l'ancre, qui
      * peut se trouver dans un chunk voisin ; tirage choisit la variante dans le dossier.

@@ -31,7 +31,10 @@ public final class PlanColonne {
      * @param eauJusquA Y le plus haut rempli d'eau (inclus), ou null
      * @param teinte    couleur ARGB de l'herbe pour cette colonne
      */
-    public record Plan(int surfaceY, String[] blocs, Integer eauJusquA, int teinte) {}
+    public record Plan(int surfaceY, String[] blocs, Integer eauJusquA, int teinte, String plante) {}
+
+    static final int GRAINE_PLANTE = 83, GRAINE_TOUFFES = 89;
+    static final double ONDE_TOUFFES = 24;
 
     private PlanColonne() {}
 
@@ -56,7 +59,12 @@ public final class PlanColonne {
         if (niveau != null && NIVEAU_MER_Y + niveau > surfaceY) {
             eauJusquA = Math.min(NIVEAU_MER_Y + niveau, Y_MAX);
         }
-        return new Plan(surfaceY, blocs, eauJusquA, teinte(Palette.argb(couches.teinte()), x, z));
+        String plante = null;
+        if (niveau == null && !c.route(x, z) && pente < p.penteFalaise() && surfaceY < Y_MAX
+            && p.solsFertiles().contains(blocs[surfaceY])) {
+            plante = plante(p.region(region).sol(), x, z);
+        }
+        return new Plan(surfaceY, blocs, eauJusquA, teinte(Palette.argb(couches.teinte()), x, z), plante);
     }
 
     private static String surface(CartesMonde c, Palette p, int x, int z, int alt, int pente, int region,
@@ -78,6 +86,22 @@ public final class PlanColonne {
             if (Bruit.fbm(GRAINE_VARIANTE + i * 7, x, z, ONDE_VARIANTE, 2) > seuil) return v.bloc();
         }
         return couches.surface();
+    }
+
+    /** Choisit une plante pour la colonne, regroupée en touffes, ou null. */
+    static String plante(Palette.Sol sol, int x, int z) {
+        if (sol.densite() <= 0) return null;
+        double touffes = Math.max(0.1, 1 + 0.9 * Bruit.fbm(GRAINE_TOUFFES, x, z, ONDE_TOUFFES, 2));
+        long h = Bruit.hachage(GRAINE_PLANTE, x, z);
+        if ((h >>> 40) / (double) (1L << 24) >= sol.densite() * touffes) return null;
+        double total = 0;
+        for (Palette.Plante pl : sol.blocs()) total += pl.poids();
+        double t = ((h & 0xFFFFFF) / (double) (1 << 24)) * total;
+        for (Palette.Plante pl : sol.blocs()) {
+            t -= pl.poids();
+            if (t < 0) return pl.bloc();
+        }
+        return sol.blocs().get(sol.blocs().size() - 1).bloc();
     }
 
     /** Fait varier légèrement la teinte de l'herbe pour casser l'uniformité. */

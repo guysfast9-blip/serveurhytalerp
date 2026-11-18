@@ -50,6 +50,7 @@ public final class Remplisseur {
                     for (int y = plan.surfaceY() + 1; y <= plan.eauJusquA(); y++) cible.eau(lx, y, lz);
                 }
                 cible.teinte(lx, lz, plan.teinte());
+                if (plan.plante() != null) cible.plante(lx, plan.surfaceY() + 1, lz, plan.plante());
             }
         }
         int ox = cx * TAILLE_CHUNK, oz = cz * TAILLE_CHUNK;

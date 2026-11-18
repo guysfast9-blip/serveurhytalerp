@@ -21,6 +21,8 @@ Chaque région (`"1"` plaines, `"2"` montagnes, `"3"` steppes, `"4"` forêt, `"5
 - `relief` : hauteur des bosses, en blocs (0 = plat) ; `crete` : crêtes rocheuses (montagnes) ;
 - `falaise` : bloc des pentes raides ; `rocheAuDessus` : altitude au-delà de laquelle la roche affleure ;
 - `variantes` : taches d'autres blocs, `part` = proportion de la surface (0,05 = 5 %) ;
+- `sol` : herbes, fougères et fleurs d'un bloc ; `densite` = part des colonnes couvertes, `blocs` = noms et poids
+  (trouve d'autres noms avec `/aldermyr blocs Plant_Grass`, `/aldermyr blocs Flower`…) ;
 - `vegetation.densite` : chance qu'une case de 5 × 5 blocs reçoive un prefab ;
 - `vegetation.prefabs` : dossiers de prefabs du jeu (`Server/Prefabs/...`) et leur `poids`.
 
