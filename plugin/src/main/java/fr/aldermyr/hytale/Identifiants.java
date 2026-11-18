@@ -23,9 +23,19 @@ final class Identifiants {
     Identifiants(Palette palette, Consumer<String> avertir) throws WorldGenLoadException {
         this.palette = palette;
         this.avertir = avertir;
-        int idEau = Fluid.getAssetMap().getIndex(palette.eau());
+        int idEau = INCONNU;
+        for (String nom : palette.candidatsEau()) {
+            idEau = Fluid.getAssetMap().getIndex(nom);
+            if (idEau != INCONNU) {
+                if (!nom.equals(palette.eau())) {
+                    avertir.accept("Fluide « " + palette.eau() + " » inconnu : l'eau utilise « " + nom + " ».");
+                }
+                break;
+            }
+        }
         if (idEau == INCONNU) {
-            throw new WorldGenLoadException("Fluide d'eau inconnu dans la palette : " + palette.eau());
+            throw new WorldGenLoadException("Aucun fluide d'eau connu parmi " + palette.candidatsEau()
+                + ". Indiquez le bon nom dans palette.json (clé \"eau\").");
         }
         this.eau = idEau;
         this.niveauEauMax = (byte) Fluid.getAssetMap().getAsset(idEau).getMaxFluidLevel();

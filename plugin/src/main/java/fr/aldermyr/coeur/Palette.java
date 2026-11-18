@@ -80,6 +80,14 @@ public final class Palette {
     public String volcan() { return texte("volcan"); }
     public String eau() { return texte("eau"); }
 
+    /** Noms de fluide à essayer pour l'eau, dans l'ordre : celui de la palette, puis les noms connus du jeu. */
+    public java.util.List<String> candidatsEau() {
+        java.util.LinkedHashSet<String> noms = new java.util.LinkedHashSet<>();
+        noms.add(eau());
+        noms.addAll(java.util.List.of("Water_Source", "Fluid_Water", "Water"));
+        return java.util.List.copyOf(noms);
+    }
+
     /** Bloc de remplacement prévu pour un nom, ou null s'il n'y en a pas. */
     public String repli(String nom) {
         JsonObject replis = json.getAsJsonObject("replis");

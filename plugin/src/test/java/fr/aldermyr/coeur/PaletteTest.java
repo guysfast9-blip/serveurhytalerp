@@ -30,4 +30,11 @@ public class PaletteTest {
         assertEquals("Rock_Granite", p.couches(2).profondeur());
         assertEquals(150, p.altitudeNeige());
     }
+
+    @Test
+    public void candidatsEau() {
+        assertEquals(java.util.List.of("Water_Source", "Fluid_Water", "Water"), Palette.defaut().candidatsEau());
+        Palette p = Palette.lire(new StringReader("{\"eau\": \"Eau_Perso\"}"));
+        assertEquals(java.util.List.of("Eau_Perso", "Water_Source", "Fluid_Water", "Water"), p.candidatsEau());
+    }
 }
