@@ -37,4 +37,31 @@ public class DonneesReellesTest {
         for (int x = -2000; x < 2000; x += 7) max = Math.max(max, c.altitude(x, -1400));
         assertTrue("sommet le plus haut : " + max, max >= 100);
     }
+
+    @Test
+    public void generationAssezRapide() throws Exception {
+        assumeTrue("données de l'atelier absentes", Files.exists(DONNEES.resolve("altitude.png")));
+        CartesMonde c = CartesMonde.charger(DONNEES);
+        Remplisseur r = new Remplisseur(c, Palette.defaut(), Extrait.tout());
+        int[][] chunks = {{37, -19}, {-12, -43}, {-47, -31}, {0, 0}, {-4, 43}};
+        for (int[] ch : chunks) r.remplir(ch[0], ch[1], new Cible() {   // chauffe
+            public void bloc(int lx, int y, int lz, String nom) {}
+            public void eau(int lx, int y, int lz) {}
+            public void teinte(int lx, int lz, int argb) {}
+        });
+        long debut = System.nanoTime();
+        int[] prefabs = {0};
+        for (int k = 0; k < 4; k++) {
+            for (int[] ch : chunks) r.remplir(ch[0] + k, ch[1], new Cible() {
+                public void bloc(int lx, int y, int lz, String nom) {}
+                public void eau(int lx, int y, int lz) {}
+                public void teinte(int lx, int lz, int argb) {}
+                public void prefab(String d, long t, int lx, int y, int lz) { prefabs[0]++; }
+            });
+        }
+        double ms = (System.nanoTime() - debut) / 1e6 / (4 * chunks.length);
+        System.out.printf("Temps moyen par chunk : %.1f ms, prefabs transmis : %d%n", ms, prefabs[0]);
+        assertTrue("trop lent : " + ms + " ms par chunk", ms < 60);
+        assertTrue(prefabs[0] > 0);
+    }
 }

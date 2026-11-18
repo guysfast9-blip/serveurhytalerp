@@ -1,7 +1,8 @@
 {
   "Group": "fr.aldermyr",
   "Name": "AldermyrGenerateur",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "Main": "fr.aldermyr.hytale.AldermyrPlugin",
-  "Description": "Générateur de terrain d'Aldermyr"
+  "Description": "Générateur de terrain d'Aldermyr",
+  "ServerVersion": "*"
 }

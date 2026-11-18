@@ -6,7 +6,7 @@
           "vegetation": {"densite": 0, "prefabs": []}},
     "1": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#7DB24A",
           "relief": 3, "falaise": "Soil_Dirt",
-          "variantes": [{"bloc": "Soil_Dirt", "part": 0.03}],
+          "variantes": [{"bloc": "Soil_Dirt", "part": 0.02}],
           "vegetation": {"densite": 0.05, "prefabs": [
             {"dossier": "Trees/Oak/Stage_2", "poids": 3},
             {"dossier": "Trees/Oak/Stage_3", "poids": 3},
@@ -28,7 +28,7 @@
             {"dossier": "Rock_Formations/Pillars/Slate", "poids": 0.3}]}},
     "3": {"surface": "Soil_Grass", "sousCouche": "Soil_Dirt", "profondeur": "Rock_Stone", "teinte": "#B3A458",
           "relief": 4, "falaise": "Rock_Shale",
-          "variantes": [{"bloc": "Soil_Dirt", "part": 0.15}, {"bloc": "Soil_Gravel", "part": 0.06}, {"bloc": "Rock_Volcanic", "part": 0.04}],
+          "variantes": [{"bloc": "Soil_Dirt", "part": 0.08}, {"bloc": "Soil_Gravel", "part": 0.04}, {"bloc": "Rock_Volcanic", "part": 0.02}],
           "vegetation": {"densite": 0.025, "prefabs": [
             {"dossier": "Trees/Dry/Stage_2", "poids": 2},
             {"dossier": "Trees/Dry/Stage_1_Dead", "poids": 1},

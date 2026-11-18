@@ -25,6 +25,11 @@ public final class AldermyrPlugin extends JavaPlugin {
         getCodecRegistry(IWorldGenProvider.CODEC)
             .register(TYPE_GENERATEUR, AldermyrWorldGenProvider.class, AldermyrWorldGenProvider.CODEC);
         getCommandRegistry().registerCommand(new CommandeAldermyr());
+        try {
+            java.nio.file.Files.createDirectories(getDataDirectory().resolve("donnees"));
+        } catch (java.io.IOException e) {
+            avertir("Impossible de créer le dossier donnees : " + e.getMessage());
+        }
         getLogger().at(Level.INFO).log("Générateur Aldermyr enregistré. Données attendues dans : %s",
             getDataDirectory().resolve("donnees").toAbsolutePath());
     }

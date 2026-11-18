@@ -11,7 +11,7 @@ public final class PlanColonne {
     static final int RAYON_VOLCAN = 90;
     private static final int REGION_MER = 0, REGION_MONTAGNES = 2;
     static final int GRAINE_VARIANTE = 41, GRAINE_TEINTE = 53;
-    static final double ONDE_VARIANTE = 14, ONDE_TEINTE = 30, ECART_TEINTE = 0.08;
+    static final double ONDE_VARIANTE = 20, ONDE_TEINTE = 30, ECART_TEINTE = 0.08;
 
     /** Quantiles du bruit des variantes : une variante de part p couvre environ p de la surface. */
     private static final double[] QUANTILES = new double[1001];

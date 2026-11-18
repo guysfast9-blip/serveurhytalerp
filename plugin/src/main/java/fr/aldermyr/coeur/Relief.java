@@ -11,7 +11,8 @@ public final class Relief {
     /** Écart entre les échantillons de région (lissage des transitions). */
     static final int ECART_REGIONS = 12;
     /** Distances (en blocs) à l'eau : figé jusqu'à BERGE, atténué jusqu'à ABORDS. */
-    static final int BERGE = 2, ABORDS = 6;
+    static final int BERGE = 2, ABORDS = 6, ABORDS_ROUTE = 12;
+    private static final int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
     private final CartesMonde cartes;
     private final Palette palette;
@@ -85,6 +86,14 @@ public final class Relief {
         for (int dz = -2; dz <= 2; dz++) {
             for (int dx = -2; dx <= 2; dx++) {
                 if (cartes.route(x + dx, z + dz)) return Math.min(att, 0.2);
+            }
+        }
+        // Abords des routes : on remonte progressivement vers le relief complet (pas de tranchée).
+        for (int d = 4; d <= ABORDS_ROUTE; d += 2) {
+            for (int[] dir : DIRECTIONS) {
+                if (cartes.route(x + dir[0] * d, z + dir[1] * d)) {
+                    return Math.min(att, 0.2 + 0.8 * (d - 2) / (double) (ABORDS_ROUTE - 1));
+                }
             }
         }
         return att;

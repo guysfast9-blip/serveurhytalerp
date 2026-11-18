@@ -28,11 +28,13 @@ final class AldermyrWorldGen implements IWorldGen {
     private final CartesMonde cartes;
     private final Remplisseur remplisseur;
     private final Identifiants ids;
+    private final Prefabs prefabs;
 
-    AldermyrWorldGen(CartesMonde cartes, Remplisseur remplisseur, Identifiants ids) {
+    AldermyrWorldGen(CartesMonde cartes, Remplisseur remplisseur, Identifiants ids, Prefabs prefabs) {
         this.cartes = cartes;
         this.remplisseur = remplisseur;
         this.ids = ids;
+        this.prefabs = prefabs;
     }
 
     @Override
@@ -45,7 +47,7 @@ final class AldermyrWorldGen implements IWorldGen {
                                                       LongPredicate encoreUtile, Long2FloatFunction inutilise) {
         GeneratedBlockChunk blocs = new GeneratedBlockChunk(index, cx, cz);
         Holder<ChunkStore>[] sections = GeneratedChunk.makeSections();
-        remplisseur.remplir(cx, cz, new CibleHytale(blocs, sections, ids));
+        remplisseur.remplir(cx, cz, new CibleHytale(blocs, sections, ids, prefabs));
         return CompletableFuture.completedFuture(new GeneratedChunk(blocs, new GeneratedEntityChunk(), sections));
     }
 

@@ -107,7 +107,7 @@ public class PlanColonneTest {
             teintes.add(p.teinte());
         }
         int terre = compte.getOrDefault("Soil_Dirt", 0);
-        assertTrue("terre : " + compte, terre > 200 && terre < 1200);
+        assertTrue("terre : " + compte, terre > 100 && terre < 800);
         assertTrue(compte.get("Soil_Grass") > 2000);
         assertTrue(teintes.size() > 20);
     }
