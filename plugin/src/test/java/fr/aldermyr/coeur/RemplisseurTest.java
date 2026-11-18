@@ -33,14 +33,14 @@ public class RemplisseurTest {
     @Test
     public void chunkOrigine() {
         CartesMonde c = CartesMonde.vide();
-        c.poser(0, 0, 10, 1, null, false);
+        c.poserZone(-1, -1, 3, 3, 10, 1);
         assertTrue(remplir(c, Extrait.tout(), 0, 0).blocs.contains("0,110,0,Soil_Grass"));
     }
 
     @Test
     public void chunkNegatif() {
         CartesMonde c = CartesMonde.vide();
-        c.poser(-1, -1, 10, 1, null, false);
+        c.poserZone(-2, -2, 3, 3, 10, 1);
         assertTrue(remplir(c, Extrait.tout(), -1, -1).blocs.contains("31,110,31,Soil_Grass"));
     }
 

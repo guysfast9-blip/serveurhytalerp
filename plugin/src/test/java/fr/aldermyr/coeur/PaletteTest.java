@@ -37,4 +37,27 @@ public class PaletteTest {
         Palette p = Palette.lire(new StringReader("{\"eau\": \"Eau_Perso\"}"));
         assertEquals(java.util.List.of("Eau_Perso", "Water_Source", "Fluid_Water", "Water"), p.candidatsEau());
     }
+
+    @Test
+    public void reglagesV2() {
+        Palette p = Palette.defaut();
+        assertEquals(2, p.version());
+        assertEquals(3, p.penteFalaise());
+        Palette.Region montagnes = p.region(2);
+        assertTrue(montagnes.crete() > montagnes.relief());
+        assertEquals("Rock_Stone", montagnes.falaise());
+        assertEquals(0, p.region(0).vegetation().densite(), 0);
+        Palette.Region foret = p.region(4);
+        assertTrue(foret.vegetation().densite() > p.region(1).vegetation().densite());
+        assertFalse(foret.vegetation().prefabs().isEmpty());
+        assertTrue(foret.vegetation().prefabs().get(0).dossier().startsWith("Trees/"));
+        for (int r = 0; r <= 8; r++) {
+            for (Palette.Variante v : p.region(r).variantes()) assertTrue(v.part() > 0 && v.part() < 1);
+        }
+    }
+
+    @Test
+    public void ancienneVersionDetectee() {
+        assertEquals(1, Palette.lire(new StringReader("{\"neige\": \"Soil_Snow\"}")).version());
+    }
 }

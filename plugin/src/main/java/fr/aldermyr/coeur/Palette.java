@@ -16,22 +16,37 @@ public final class Palette {
 
     public record Couches(String surface, String sousCouche, String profondeur, String teinte) {}
 
-    private final JsonObject json;
+    public record Variante(String bloc, double part) {}
 
-    private Palette(JsonObject json) {
+    public record Prefab(String dossier, double poids) {}
+
+    public record Vegetation(double densite, java.util.List<Prefab> prefabs) {}
+
+    /** Réglages du relief, des surfaces et de la végétation d'une région. */
+    public record Region(double relief, double crete, String falaise, int rocheAuDessus,
+                         java.util.List<Variante> variantes, Vegetation vegetation) {}
+
+    private final JsonObject json;
+    private final int versionFichier;
+    private final Region[] regions = new Region[256];
+
+    private Palette(JsonObject json, int versionFichier) {
         this.json = json;
+        this.versionFichier = versionFichier;
     }
 
     public static Palette defaut() {
-        return new Palette(lireDefaut());
+        JsonObject j = lireDefaut();
+        return new Palette(j, j.get("version").getAsInt());
     }
 
     /** Lit une palette ; toute clé absente reprend la valeur par défaut. */
     public static Palette lire(Reader r) {
         JsonObject base = lireDefaut();
         JsonObject perso = new Gson().fromJson(r, JsonObject.class);
+        int version = perso != null && perso.has("version") ? perso.get("version").getAsInt() : 1;
         if (perso != null) fusionner(base, perso);
-        return new Palette(base);
+        return new Palette(base, version);
     }
 
     /** Le JSON complet (valeurs par défaut comprises), pour l'écrire sur disque. */
@@ -65,6 +80,52 @@ public final class Palette {
         if (r == null) r = regions.getAsJsonObject("0");
         return new Couches(r.get("surface").getAsString(), r.get("sousCouche").getAsString(),
             r.get("profondeur").getAsString(), r.get("teinte").getAsString());
+    }
+
+    /** Version du fichier lu (1 si la clé "version" est absente). */
+    public int version() { return versionFichier; }
+    public int penteFalaise() { return json.get("penteFalaise").getAsInt(); }
+    public int limiteArbres() { return json.get("limiteArbres").getAsInt(); }
+
+    public Region region(int region) {
+        Region r = regions[region & 0xFF];
+        if (r == null) {
+            r = lireRegion(region);
+            regions[region & 0xFF] = r;
+        }
+        return r;
+    }
+
+    private Region lireRegion(int region) {
+        JsonObject toutes = json.getAsJsonObject("regions");
+        JsonObject o = toutes.getAsJsonObject(Integer.toString(region));
+        if (o == null) o = toutes.getAsJsonObject("0");
+        java.util.List<Variante> variantes = new java.util.ArrayList<>();
+        if (o.has("variantes")) {
+            for (JsonElement e : o.getAsJsonArray("variantes")) {
+                JsonObject v = e.getAsJsonObject();
+                variantes.add(new Variante(v.get("bloc").getAsString(), v.get("part").getAsDouble()));
+            }
+        }
+        double densite = 0;
+        java.util.List<Prefab> prefabs = new java.util.ArrayList<>();
+        if (o.has("vegetation")) {
+            JsonObject veg = o.getAsJsonObject("vegetation");
+            densite = veg.has("densite") ? veg.get("densite").getAsDouble() : 0;
+            if (veg.has("prefabs")) {
+                for (JsonElement e : veg.getAsJsonArray("prefabs")) {
+                    JsonObject pf = e.getAsJsonObject();
+                    prefabs.add(new Prefab(pf.get("dossier").getAsString(), pf.get("poids").getAsDouble()));
+                }
+            }
+        }
+        String surface = o.get("surface").getAsString();
+        return new Region(
+            o.has("relief") ? o.get("relief").getAsDouble() : 0,
+            o.has("crete") ? o.get("crete").getAsDouble() : 0,
+            o.has("falaise") ? o.get("falaise").getAsString() : surface,
+            o.has("rocheAuDessus") ? o.get("rocheAuDessus").getAsInt() : Integer.MAX_VALUE,
+            java.util.List.copyOf(variantes), new Vegetation(densite, java.util.List.copyOf(prefabs)));
     }
 
     private String texte(String cle) {
