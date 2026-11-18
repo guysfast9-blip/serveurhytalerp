@@ -11,6 +11,7 @@ public final class Remplisseur {
     private final Extrait extrait;
     private final Relief relief;
     private final Relief reliefMer;
+    private final Vegetation vegetation;
 
     public Remplisseur(CartesMonde cartes, Palette palette, Extrait extrait) {
         this.cartes = cartes;
@@ -18,6 +19,7 @@ public final class Remplisseur {
         this.extrait = extrait;
         this.relief = new Relief(cartes, palette);
         this.reliefMer = new Relief(HAUTE_MER, palette);
+        this.vegetation = new Vegetation(cartes, palette, relief, extrait);
     }
 
     private int altitude(int x, int z) {
@@ -49,6 +51,10 @@ public final class Remplisseur {
                 }
                 cible.teinte(lx, lz, plan.teinte());
             }
+        }
+        int ox = cx * TAILLE_CHUNK, oz = cz * TAILLE_CHUNK;
+        for (Vegetation.Placement p : vegetation.placements(cx, cz)) {
+            cible.prefab(p.dossier(), p.tirage(), p.x() - ox, p.y(), p.z() - oz);
         }
     }
 }
