@@ -64,7 +64,7 @@ public final class Vegetation {
         int alt = relief.altitude(x, z);
         if (alt >= palette.limiteArbres() || alt >= palette.altitudeNeige()) return null;
         if (relief.pente(x, z) >= PENTE_MAX) return null;
-        return new Placement(x, PlanColonne.NIVEAU_MER_Y + alt + 1, z, choisir(veg, x, z),
+        return new Placement(x, PlanColonne.NIVEAU_MER_Y + alt + 1 + palette.decalagePrefabs(), z, choisir(veg, x, z),
             Bruit.hachage(GRAINE_CHOIX + 1, x, z));
     }
 

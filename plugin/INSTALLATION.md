@@ -24,6 +24,8 @@ Chaque région (`"1"` plaines, `"2"` montagnes, `"3"` steppes, `"4"` forêt, `"5
 - `vegetation.densite` : chance qu'une case de 5 × 5 blocs reçoive un prefab ;
 - `vegetation.prefabs` : dossiers de prefabs du jeu (`Server/Prefabs/...`) et leur `poids`.
 
+Si les arbres flottent d'un bloc, mets `"decalagePrefabs": -1` ; s'ils sont enfoncés, `1`.
+
 Un dossier de prefab introuvable donne un avertissement « Aucun prefab dans … » dans le journal.
 Après une modification, crée un nouveau monde pour voir le résultat.
 

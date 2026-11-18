@@ -87,6 +87,7 @@
   },
   "penteFalaise": 3,
   "limiteArbres": 130,
+  "decalagePrefabs": 0,
   "neige": "Soil_Snow",
   "altitudeNeige": 150,
   "litEau": "Soil_Gravel",

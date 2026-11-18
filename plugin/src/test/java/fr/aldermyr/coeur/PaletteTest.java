@@ -43,6 +43,8 @@ public class PaletteTest {
         Palette p = Palette.defaut();
         assertEquals(2, p.version());
         assertEquals(3, p.penteFalaise());
+        assertEquals(0, p.decalagePrefabs());
+        assertEquals(-1, Palette.lire(new StringReader("{\"decalagePrefabs\": -1}")).decalagePrefabs());
         Palette.Region montagnes = p.region(2);
         assertTrue(montagnes.crete() > montagnes.relief());
         assertEquals("Rock_Stone", montagnes.falaise());

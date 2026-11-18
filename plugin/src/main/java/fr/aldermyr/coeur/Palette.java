@@ -86,6 +86,8 @@ public final class Palette {
     public int version() { return versionFichier; }
     public int penteFalaise() { return json.get("penteFalaise").getAsInt(); }
     public int limiteArbres() { return json.get("limiteArbres").getAsInt(); }
+    /** Décalage vertical des prefabs (si les arbres flottent ou s'enfoncent d'un bloc). */
+    public int decalagePrefabs() { return json.has("decalagePrefabs") ? json.get("decalagePrefabs").getAsInt() : 0; }
 
     public Region region(int region) {
         Region r = regions[region & 0xFF];
