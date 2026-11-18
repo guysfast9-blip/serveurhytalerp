@@ -43,6 +43,25 @@ public final class CartesMonde {
         return c;
     }
 
+    /** Monde marin modifiable, pour les tests. */
+    static CartesMonde vide() {
+        return mer();
+    }
+
+    /** Pose une colonne (tests uniquement). */
+    void poser(int x, int z, int alt, int reg, Integer niveau, boolean route) {
+        int i = indice(x, z);
+        altitude[i] = (short) alt;
+        region[i] = (byte) reg;
+        eau[i] = niveau == null ? 0 : (short) (niveau + DECALAGE);
+        routes.set(i, route);
+    }
+
+    /** Ajoute un lieu (tests uniquement). */
+    void ajouterLieu(Lieu l) {
+        lieux.add(l);
+    }
+
     public static CartesMonde charger(Path dossier) throws IOException {
         CartesMonde c = new CartesMonde();
         Raster alt = lireImage(dossier, "altitude.png");

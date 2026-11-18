@@ -1,0 +1,26 @@
+{
+  "regions": {
+    "0": {"surface": "Soil_Sand",     "sousCouche": "Soil_Clay",   "profondeur": "Rock_Stone",   "teinte": "#6A9A5A"},
+    "1": {"surface": "Soil_Grass",    "sousCouche": "Soil_Dirt",   "profondeur": "Rock_Stone",   "teinte": "#7DB24A"},
+    "2": {"surface": "Rock_Stone",    "sousCouche": "Rock_Stone",  "profondeur": "Rock_Granite", "teinte": "#6E8A5A"},
+    "3": {"surface": "Rock_Volcanic", "sousCouche": "Rock_Basalt", "profondeur": "Rock_Stone",   "teinte": "#9A8456"},
+    "4": {"surface": "Soil_Grass",    "sousCouche": "Soil_Dirt",   "profondeur": "Rock_Stone",   "teinte": "#4E8F3A"},
+    "5": {"surface": "Soil_Mud",      "sousCouche": "Soil_Dirt",   "profondeur": "Rock_Stone",   "teinte": "#8C8A4E"},
+    "6": {"surface": "Soil_Sand",     "sousCouche": "Soil_Clay",   "profondeur": "Rock_Stone",   "teinte": "#A8B060"},
+    "7": {"surface": "Rock_Shale",    "sousCouche": "Rock_Stone",  "profondeur": "Rock_Stone",   "teinte": "#77706A"},
+    "8": {"surface": "Rock_Basalt",   "sousCouche": "Rock_Shale",  "profondeur": "Rock_Stone",   "teinte": "#5A4A66"}
+  },
+  "neige": "Soil_Snow",
+  "altitudeNeige": 150,
+  "litEau": "Soil_Gravel",
+  "fondMer": "Soil_Sand",
+  "route": "Soil_Dirt",
+  "obsidienne": "Rock_Obsidian",
+  "volcan": "Rock_Volcanic",
+  "eau": "Water_Source",
+  "replis": {
+    "Soil_Sand": "Soil_Clay",
+    "Soil_Snow": "Rock_Marble",
+    "Rock_Obsidian": "Rock_Basalt"
+  }
+}
