@@ -24,6 +24,7 @@ public final class AldermyrPlugin extends JavaPlugin {
     protected void setup() {
         getCodecRegistry(IWorldGenProvider.CODEC)
             .register(TYPE_GENERATEUR, AldermyrWorldGenProvider.class, AldermyrWorldGenProvider.CODEC);
+        getCommandRegistry().registerCommand(new CommandeAldermyr());
         getLogger().at(Level.INFO).log("Générateur Aldermyr enregistré. Données attendues dans : %s",
             getDataDirectory().resolve("donnees").toAbsolutePath());
     }
