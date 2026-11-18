@@ -2,6 +2,33 @@
 
 Version 0.1.0, pour un serveur Hytale **0.7.7**.
 
+## Passer de la version 0.1 à la 0.2
+
+1. Arrête le serveur.
+2. Dans `mods/`, remplace l'ancien `AldermyrGenerateur.jar` par le nouveau (garde un seul fichier `.jar` du plugin).
+3. Ne touche pas au dossier `mods/fr.aldermyr_AldermyrGenerateur/donnees/` : les cartes n'ont pas changé.
+4. Démarre le serveur. Au premier chargement du monde, l'ancienne `palette.json` est renommée
+   `palette-v1.json` et remplacée par la nouvelle (relief, variantes, végétation).
+5. Les morceaux de terrain déjà visités gardent l'ancien relief. Crée donc un **nouveau monde** :
+   `/world add aldermyr2 --gen=Aldermyr`, puis `/tp world aldermyr2`.
+   L'ancien monde peut être supprimé ensuite avec `/world remove aldermyr`.
+
+## Régler le relief et la végétation (palette.json)
+
+Chaque région (`"1"` plaines, `"2"` montagnes, `"3"` steppes, `"4"` forêt, `"5"` Marches,
+`"6"` côte, `"7"` ruines, `"8"` cratère) accepte :
+
+- `relief` : hauteur des bosses, en blocs (0 = plat) ; `crete` : crêtes rocheuses (montagnes) ;
+- `falaise` : bloc des pentes raides ; `rocheAuDessus` : altitude au-delà de laquelle la roche affleure ;
+- `variantes` : taches d'autres blocs, `part` = proportion de la surface (0,05 = 5 %) ;
+- `vegetation.densite` : chance qu'une case de 5 × 5 blocs reçoive un prefab ;
+- `vegetation.prefabs` : dossiers de prefabs du jeu (`Server/Prefabs/...`) et leur `poids`.
+
+Si les arbres flottent d'un bloc, mets `"decalagePrefabs": -1` ; s'ils sont enfoncés, `1`.
+
+Un dossier de prefab introuvable donne un avertissement « Aucun prefab dans … » dans le journal.
+Après une modification, crée un nouveau monde pour voir le résultat.
+
 ## Ce qu'il te faut
 
 - `AldermyrGenerateur.jar` : le plugin.

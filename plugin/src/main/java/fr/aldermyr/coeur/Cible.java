@@ -7,4 +7,10 @@ public interface Cible {
     void eau(int lx, int y, int lz);
 
     void teinte(int lx, int lz, int argb);
+
+    /**
+     * Pose la partie d'un prefab qui tombe dans ce chunk. (lx, lz) est la position de l'ancre, qui
+     * peut se trouver dans un chunk voisin ; tirage choisit la variante dans le dossier.
+     */
+    default void prefab(String dossier, long tirage, int lx, int y, int lz) {}
 }

@@ -57,6 +57,13 @@ public final class CartesMonde {
         routes.set(i, route);
     }
 
+    /** Pose un rectangle de terre sèche, sans route (tests uniquement). */
+    void poserZone(int x0, int z0, int largeur, int hauteur, int alt, int reg) {
+        for (int z = z0; z < z0 + hauteur; z++) {
+            for (int x = x0; x < x0 + largeur; x++) poser(x, z, alt, reg, null, false);
+        }
+    }
+
     /** Ajoute un lieu (tests uniquement). */
     void ajouterLieu(Lieu l) {
         lieux.add(l);

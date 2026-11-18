@@ -11,7 +11,7 @@ public class PlanColonneTest {
     static PlanColonne.Plan plan(int alt, int region, Integer niveau, boolean route) {
         CartesMonde c = CartesMonde.vide();
         c.poser(0, 0, alt, region, niveau, route);
-        return PlanColonne.planifier(c, P, 0, 0);
+        return PlanColonne.planifier(c, P, 0, 0, alt, 0);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class PlanColonneTest {
         assertEquals("Rock_Stone", p.blocs()[0]);
         assertEquals("Rock_Stone", p.blocs()[106]);
         assertNull(p.eauJusquA());
-        assertEquals(0xFF7DB24A, p.teinte());
+        assertTrue(procheDe(0xFF7DB24A, p.teinte()));
     }
 
     @Test
@@ -72,8 +72,43 @@ public class PlanColonneTest {
         c.poser(10, 0, 20, 3, null, false);
         c.poser(560, 0, 60, 1, null, false);
         c.poser(700, 0, 20, 1, null, false);
-        assertEquals("Rock_Obsidian", PlanColonne.planifier(c, P, 10, 0).blocs()[120]);
-        assertEquals("Rock_Volcanic", PlanColonne.planifier(c, P, 560, 0).blocs()[160]);
-        assertEquals("Soil_Grass", PlanColonne.planifier(c, P, 700, 0).blocs()[120]);
+        assertEquals("Rock_Obsidian", PlanColonne.planifier(c, P, 10, 0, 20, 0).blocs()[120]);
+        assertEquals("Rock_Volcanic", PlanColonne.planifier(c, P, 560, 0, 60, 0).blocs()[160]);
+        assertEquals("Soil_Grass", PlanColonne.planifier(c, P, 700, 0, 20, 0).blocs()[120]);
+    }
+
+    static boolean procheDe(int attendu, int teinte) {
+        for (int decalage = 0; decalage <= 16; decalage += 8) {
+            int a = (attendu >> decalage) & 0xFF, t = (teinte >> decalage) & 0xFF;
+            if (Math.abs(a - t) > a * 0.1 + 1) return false;
+        }
+        return (teinte >>> 24) == 0xFF;
+    }
+
+    @Test
+    public void falaiseSurLesPentes() {
+        CartesMonde c = CartesMonde.vide();
+        c.poser(0, 0, 60, 2, null, false);
+        assertEquals("Rock_Stone", PlanColonne.planifier(c, P, 0, 0, 60, 5).blocs()[160]);
+        c.poser(0, 0, 10, 1, null, false);
+        assertEquals("Soil_Dirt", PlanColonne.planifier(c, P, 0, 0, 10, 3).blocs()[110]);
+    }
+
+    @Test
+    public void variantesEtTeintesVariees() {
+        CartesMonde c = CartesMonde.vide();
+        java.util.Map<String, Integer> compte = new java.util.HashMap<>();
+        java.util.Set<Integer> teintes = new java.util.HashSet<>();
+        for (int i = 0; i < 4000; i++) {
+            int x = (i % 80) * 3, z = (i / 80) * 3;
+            c.poser(x, z, 20, 3, null, false);
+            PlanColonne.Plan p = PlanColonne.planifier(c, P, x, z, 20, 0);
+            compte.merge(p.blocs()[120], 1, Integer::sum);
+            teintes.add(p.teinte());
+        }
+        int terre = compte.getOrDefault("Soil_Dirt", 0);
+        assertTrue("terre : " + compte, terre > 100 && terre < 800);
+        assertTrue(compte.get("Soil_Grass") > 2000);
+        assertTrue(teintes.size() > 20);
     }
 }

@@ -63,7 +63,8 @@ public final class AldermyrWorldGenProvider implements IWorldGenProvider {
             Palette palette = chargerPalette(base.resolve("palette.json"));
             Extrait zone = extrait == null || extrait.isBlank() ? Extrait.tout() : Extrait.lire(extrait);
             Identifiants ids = new Identifiants(palette, plugin::avertir);
-            return new AldermyrWorldGen(cartes, new Remplisseur(cartes, palette, zone), ids);
+            return new AldermyrWorldGen(cartes, new Remplisseur(cartes, palette, zone), ids,
+                new Prefabs(plugin::avertir));
         } catch (java.io.UncheckedIOException e) {
             throw new WorldGenLoadException(e.getCause().getMessage());
         } catch (IOException | IllegalArgumentException e) {
@@ -73,9 +74,15 @@ public final class AldermyrWorldGenProvider implements IWorldGenProvider {
 
     private static Palette chargerPalette(Path fichier) throws IOException {
         if (Files.exists(fichier)) {
+            Palette lue;
             try (Reader r = Files.newBufferedReader(fichier, StandardCharsets.UTF_8)) {
-                return Palette.lire(r);
+                lue = Palette.lire(r);
             }
+            if (lue.version() >= Palette.defaut().version()) return lue;
+            Path ancienne = fichier.resolveSibling("palette-v" + lue.version() + ".json");
+            Files.move(fichier, ancienne, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            AldermyrPlugin.get().avertir("Ancienne palette.json mise de côté (" + ancienne.getFileName()
+                + ") et remplacée par la palette v" + Palette.defaut().version() + ".");
         }
         Palette defaut = Palette.defaut();
         Files.createDirectories(fichier.getParent());
