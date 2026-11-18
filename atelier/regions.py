@@ -6,7 +6,7 @@ from .bruit import fbm
 from .monde import (CRATERE, GRAINE, HAUTEUR, LARGEUR, LIEUX, RAYON_CRATERE, RAYON_RUINES,
                     Region)
 
-MARGE_BORD = 0.12      # bande (en fraction de la hauteur) où la terre est progressivement repoussée vers l'intérieur
+MARGE_BORD = 0.07      # bande (en fraction de la hauteur) où la terre est progressivement repoussée vers l'intérieur
 RAYON_CALME = 250      # pixels : autour des lieux, la déformation s'atténue pour garder chaque lieu dans sa région
 
 
@@ -47,7 +47,7 @@ def carte_regions(graine: int = GRAINE) -> np.ndarray:
     # contour de l'île : ellipse bruitée, repoussée des bords de l'image
     ell = ((u - 0.5) / 0.47) ** 2 + ((v - 0.47) / 0.45) ** 2
     bord = np.minimum.reduce([u * w / h, (1 - u) * w / h, v, 1 - v])
-    penalite = np.clip(MARGE_BORD - bord, 0, None) * 3
+    penalite = np.clip(MARGE_BORD - bord, 0, None) * 8
     # près des lieux nommés, le bruit de la côte s'atténue aussi : ils restent sur la terre ferme
     bruit_cote = ((n3 - 0.5) * 0.45 + (cote - 0.5) * 0.5) * calme
     terre = (ell + bruit_cote + penalite < 1.0) & (wv + (cote - 0.5) * 0.04 * calme < 0.90)
@@ -62,7 +62,8 @@ def carte_regions(graine: int = GRAINE) -> np.ndarray:
     reg[(wu < 0.30) & (wv < 0.62)] = Region.STEPPES
     reg[(wu > 0.70) & (wv < 0.62)] = Region.FORET
     reg[wv < 0.22] = Region.MONTAGNES
-    dcr = distance_cratere(wu, wv)
+    # le Cratère et ses ruines sont peu déformés : ils restent centrés sur leur emplacement
+    dcr = distance_cratere(u + (wu - u) * 0.35, v + (wv - v) * 0.35)
     reg[dcr < RAYON_RUINES] = Region.RUINES
     reg[dcr < RAYON_CRATERE] = Region.CRATERE
     reg[~terre] = Region.MER
