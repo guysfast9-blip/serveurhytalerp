@@ -86,7 +86,7 @@ LIEUX: tuple[Lieu, ...] = (
     _capitale("Durmarak", 0.42, 0.12),
     _capitale("Cœur-Sylve", 0.86, 0.40),
     _capitale("Gorrath", 0.14, 0.42),
-    _capitale("Port-Écume", 0.475, 0.895),
+    _capitale("Port-Écume", 0.475, 0.88),
     Lieu("Valmont", "ville", 0.385, 0.335, 35),
     # Empire
     _village("Gué-Rouge", 0.555, 0.52),

@@ -56,6 +56,15 @@ def _trace_brut(r: Riviere) -> np.ndarray:
     return pix[garde]
 
 
+def masques_lacs(regions: np.ndarray | None = None, graine: int = GRAINE) -> list[np.ndarray]:
+    """Un masque par lac de LACS (hors Cratère et ruines si les régions sont fournies)."""
+    masques = _masques_lacs(graine)
+    if regions is not None:
+        interdit = np.isin(regions, [Region.CRATERE, Region.RUINES])
+        masques = [m & ~interdit for m in masques]
+    return masques
+
+
 def _masques_lacs(graine: int) -> list[np.ndarray]:
     bruit = fbm(HAUTEUR, LARGEUR, 4, 40, graine + 40)   # grain fin : rives découpées
     v, u = np.ogrid[0:HAUTEUR, 0:LARGEUR]
@@ -70,7 +79,7 @@ def appliquer_eau(alt: np.ndarray, regions: np.ndarray, graine: int = GRAINE) ->
     alt = alt.copy()
     mer = regions == Region.MER
     interdit = np.isin(regions, [Region.CRATERE, Region.RUINES])
-    lacs = [m & ~interdit for m in _masques_lacs(graine)]
+    lacs = masques_lacs(regions, graine)
     niveau_lac = []
     for m in lacs:
         contour = binary_dilation(m, iterations=2) & ~m
